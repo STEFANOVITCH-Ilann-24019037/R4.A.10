@@ -12,11 +12,15 @@ function setup() {
 
 function AfficherLaTemperature(){
   ++I_I;
+  if (I_I >= A_tempe.length - 1){
+    I_I = 0;
+  }
   var O_AfficheTemp = document.getElementById("tempList");
   O_AfficheTemp.textContent = A_tempe[I_I];
+
 }
 
-const intervalID = setInterval(AfficherLaTemperature, 2000);
+const intervalID = setInterval(AfficherLaTemperature, 500);
 
 setup();
 
