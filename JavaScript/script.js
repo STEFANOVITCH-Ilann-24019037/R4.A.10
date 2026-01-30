@@ -1,6 +1,9 @@
+import { PP } from './module.js';
+
 var A_tempe = [];
 var I_I = 0;
 var A_TemperatureCategories = ["bleue", "vert", "orange", "rouge"];
+var A_HistoireTemperatures = [];
 
 function setup() {
   for (var i = 0; i < 20; i++) {
@@ -17,24 +20,46 @@ function AfficherLaTemperature() {
   }
 
   var O_AfficheTemp = document.getElementById("tempList");
-  O_AfficheTemp.textContent = A_tempe[I_I];
+  O_AfficheTemp.textContent = A_tempe[I_I]+ " °C";
+  A_HistoireTemperatures.push(A_tempe[I_I]);
+  var O_HistoryTemp = document.getElementById("historyList");
+  O_HistoryTemp.textContent = "Historique des températures : " + A_HistoireTemperatures.join(", ");
 
   var O_AfficheMesage = document.getElementById("message");
+
 
   if (A_tempe[I_I] < 0) {
     O_AfficheMesage.textContent = "Brrrrrrr, un peu froid ce matin, mets ta cagoule !";
     O_AfficheTemp.className = A_TemperatureCategories[0];
+
   } else if (A_tempe[I_I] >= 0 && A_tempe[I_I] <= 20) {
     O_AfficheMesage.textContent = "";
     O_AfficheTemp.className = A_TemperatureCategories[1];
+
   } else if (A_tempe[I_I] > 20 && A_tempe[I_I] <= 30) {
     O_AfficheMesage.textContent = "";
     O_AfficheTemp.className = A_TemperatureCategories[2];
+
   } else {
     O_AfficheMesage.textContent = "Caliente ! Vamos a la playa, ho hoho hoho ";
     O_AfficheTemp.className = A_TemperatureCategories[3];
   }
 }
+
+
+
+
+// Initialize tablist
+
+window.addEventListener('load', function () {
+  var tablists = document.querySelectorAll('[role=tablist].manual');
+  for (var i = 0; i < tablists.length; i++) {
+    new TabsManual(tablists[i]);
+  }
+});
+
+PP();
+
 
 const intervalID = setInterval(AfficherLaTemperature, 500);
 
