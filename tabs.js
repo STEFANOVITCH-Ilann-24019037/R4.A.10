@@ -1,4 +1,3 @@
-'use strict';
 /*
  *   This content is licensed according to the W3C Software License at
  *   https://www.w3.org/Consortium/Legal/2015/copyright-softxware-and-document
@@ -8,6 +7,7 @@
  *   Desc:   Tablist widget that implements ARIA Authoring Practices
  */
 
+'use strict';
 
 class TabsManual {
   constructor(groupNode) {
@@ -125,9 +125,11 @@ class TabsManual {
     this.setSelectedTab(event.currentTarget);
   }
 }
+// Initialize tablist
 
-export function PP(){
-  console.log("Hello from PP!");
-};
-
-export { PP};
+window.addEventListener('load', function () {
+  var tablists = document.querySelectorAll('[role=tablist].manual');
+  for (var i = 0; i < tablists.length; i++) {
+    new TabsManual(tablists[i]);
+  }
+});
