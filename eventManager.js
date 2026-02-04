@@ -3,33 +3,33 @@ class EventManager {
     this.A_tempe = [];
     this.A_HistoireTemperatures = [];
     var I_t;
-    this.subscribers = [];
+    this.A_subscribers = [];
 
-      for (var i = 0; i < 20; i++) {
+      for (var I_i = 0; I_i < 20; I_i++) {
         I_t = Math.random() * (40 - -10) + -10; // car Math.random() génère entre 0 et 1 donc pour avoir entre -10 et 40
         I_t = Math.round(I_t);
         this.A_tempe.push(I_t);
       }
   }
 
-  subscribe(callback) {
-    this.subscribers.push(callback);
+  subscribe(O_callback) {
+    this.A_subscribers.push(O_callback);
   }
 
-  notify(data) {
-    this.subscribers.forEach(callback => callback(data));
+  notify(O_data) {
+    this.A_subscribers.forEach(O_callback => O_callback(O_data));
   }
 
-  unsubscribe(callback) {
-    this.subscribers = this.subscribers.filter(sub => sub !== callback);
+  unsubscribe(O_callback) {
+    this.A_subscribers = this.A_subscribers.filter(O_sub => O_sub !== O_callback);
   }
 
-  getTemperature(index) {
-    return this.A_tempe[index];
+  getTemperature(I_index) {
+    return this.A_tempe[I_index];
   }
 
-  addToHistory(temperature) {
-    this.A_HistoireTemperatures.push(temperature);
+  addToHistory(I_temperature) {
+    this.A_HistoireTemperatures.push(I_temperature);
   }
 
   getHistory() {

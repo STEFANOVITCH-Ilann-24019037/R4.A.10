@@ -1,16 +1,13 @@
 <html>
   <head>
-    <title>My Web Page</title>
+    <title>Controle de temperature</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
   <body>
-
-    <h1>coucou C'est Ilann STEFANOVITCH</h1>
-    <p>Je suis chez moi</p>
+    <H1>Controle de temperature</H1>
 
     <Temperature  id="Temperatures"> <!-- Section pour afficher les températures -->
       <h2>Températures enregistrées :</h2>
-
       <div class="tabs">
         <div role="tablist" aria-labelledby="tablist-1" class="manual">
           <button id="TempeDirect" type="button" role="tab" aria-selected="true" aria-controls="tabpanel-1">
@@ -27,7 +24,17 @@
      <p id="tempList" role="data"><aria-live="polite" role="data"></aria-live></p>
   </div>
   <div id="tabpanel-2" role="tabpanel" aria-labelledby="Historique-2" class="is-hidden">
-    <p id="historyList" role="data"><aria-live="polite" role="data"></aria-live></p>
+    <table id="historyTable" role="data">
+      <thead>
+        <tr>
+          <th>Température (°C)</th>
+          <th>Heure</th>
+        </tr>
+      </thead>
+      <tbody id="historyList">
+        <!-- Les lignes d'historique seront ajoutées ici -->
+      </tbody>
+    </table>
   </div>
 
   </div>

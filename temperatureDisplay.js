@@ -1,36 +1,39 @@
 // Observer pour afficher la température actuelle
 class TemperatureDisplay {
-  constructor(eventManager) {
-    this.eventManager = eventManager;
-    this.tempElement = document.getElementById("tempList");
-    this.messageElement = document.getElementById("message");
-    this.categories = ["bleue", "vert", "orange", "rouge"];
+  constructor(O_eventManager) {
+    this.O_eventManager = O_eventManager;
+    this.O_tempElement = document.getElementById("tempList");
+    this.O_messageElement = document.getElementById("message");
+    this.A_categories = ["bleue", "vert", "orange", "rouge"];
+    this.A_temperatureRanges = [
+      { min: -Infinity, max: 0, S_message: "Brrrrrrr, un peu froid ce matin, mets ta cagoule !", S_category: "bleue" },
+      { min: 0, max: 20, S_message: " ", S_category: "vert" },
+      { min: 20, max: 30, S_message: " ", S_category: "orange" },
+      { min: 30, max: Infinity, S_message: "Caliente ! Vamos a la playa, ho hoho hoho ", S_category: "rouge" }
+    ];
 
     // S'abonner aux changements de température
-    this.eventManager.subscribe(this.update.bind(this));
+    this.O_eventManager.subscribe(this.update.bind(this));
   }
 
-  update(data) {
-    const temperature = data.temperature;
 
-    // Afficher la température
-    this.tempElement.textContent = temperature + " °C";
+  O_findTemperatureConfig(I_temperature) {
+    return this.A_temperatureRanges.find(
+      O_range => I_temperature >= O_range.min && I_temperature < O_range.max
+    );
+  }
 
-    // Appliquer le style et le message selon la température
-    if (temperature < 0) {
-      this.messageElement.textContent =
-        "Brrrrrrr, un peu froid ce matin, mets ta cagoule !";
-      this.tempElement.className = this.categories[0];
-    } else if (temperature >= 0 && temperature <= 20) {
-      this.messageElement.textContent = "";
-      this.tempElement.className = this.categories[1];
-    } else if (temperature > 20 && temperature <= 30) {
-      this.messageElement.textContent = "";
-      this.tempElement.className = this.categories[2];
-    } else {
-      this.messageElement.textContent =
-        "Caliente ! Vamos a la playa, ho hoho hoho ";
-      this.tempElement.className = this.categories[3];
-    }
+  update(O_data) {
+    const I_temperature = O_data.temperature;
+    const O_config = this.O_findTemperatureConfig(I_temperature);
+
+    // Afficher la température avec l'unité
+    this.O_tempElement.textContent = `${I_temperature} °C`;
+
+    // Appliquer le style CSS selon la catégorie
+    this.O_tempElement.className = O_config.S_category;
+
+    // Afficher ou masquer le message d'alerte
+    this.O_messageElement.textContent = O_config.S_message;
   }
 }
