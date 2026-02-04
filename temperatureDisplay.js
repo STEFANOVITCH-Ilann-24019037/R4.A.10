@@ -1,39 +1,58 @@
-// Observer pour afficher la température actuelle
 class TemperatureDisplay {
-  constructor(O_eventManager) {
-    this.O_eventManager = O_eventManager;
-    this.O_tempElement = document.getElementById("tempList");
-    this.O_messageElement = document.getElementById("message");
-    this.A_categories = ["bleue", "vert", "orange", "rouge"];
-    this.A_temperatureRanges = [
-      { min: -Infinity, max: 0, S_message: "Brrrrrrr, un peu froid ce matin, mets ta cagoule !", S_category: "bleue" },
-      { min: 0, max: 20, S_message: " ", S_category: "vert" },
-      { min: 20, max: 30, S_message: " ", S_category: "orange" },
-      { min: 30, max: Infinity, S_message: "Caliente ! Vamos a la playa, ho hoho hoho ", S_category: "rouge" }
-    ];
+  constructor(eventManager) {
+    this.eventManager = eventManager;
+    this.O_AfficheTemp = document.getElementById("tempList");
+    this.O_HistoryTableBody = document.getElementById("historyList");
+    this.O_AfficheMesage = document.getElementById("message");
 
-    // S'abonner aux changements de température
-    this.O_eventManager.subscribe(this.update.bind(this));
+    // S'abonner à l'EventManager
+    this.eventManager.subscribe(this.update.bind(this));
   }
 
-
-  O_findTemperatureConfig(I_temperature) {
-    return this.A_temperatureRanges.find(
-      O_range => I_temperature >= O_range.min && I_temperature < O_range.max
-    );
+  // Méthode appelée par l'EventManager quand le state change
+  update(state) {
+    this.displayCurrentTemperature(state);
+    this.updateHistoryTable();
   }
 
-  update(O_data) {
-    const I_temperature = O_data.temperature;
-    const O_config = this.O_findTemperatureConfig(I_temperature);
+  // Afficher la température actuelle
+  displayCurrentTemperature(state) {
+    this.O_AfficheTemp.textContent = state.currentTemperature + " °C";
+    this.O_AfficheTemp.className = state.category;
+    this.O_AfficheMesage.textContent = state.message;
+  }
 
-    // Afficher la température avec l'unité
-    this.O_tempElement.textContent = `${I_temperature} °C`;
+  // Mettre à jour le tableau d'historique
+  updateHistoryTable() {
+    var A_History = this.eventManager.getHistory();
 
-    // Appliquer le style CSS selon la catégorie
-    this.O_tempElement.className = O_config.S_category;
+    // Vider le tableau
+    this.O_HistoryTableBody.innerHTML = "";
 
-    // Afficher ou masquer le message d'alerte
-    this.O_messageElement.textContent = O_config.S_message;
+    // Remplir le tableau avec l'historique
+    A_History.forEach((entry) => {
+      var row = this.O_HistoryTableBody.insertRow();
+      var cellTime = row.insertCell(0);
+      var cellTemp = row.insertCell(1);
+
+      cellTime.textContent = entry.time;
+      cellTemp.textContent = entry.temperature + " °C";
+
+      // Ajouter la classe de couleur à la ligne
+      if (entry.temperature < 0) {
+        row.className = "bleue";
+      } else if (entry.temperature >= 0 && entry.temperature <= 20) {
+        row.className = "vert";
+      } else if (entry.temperature > 20 && entry.temperature <= 30) {
+        row.className = "orange";
+      } else {
+        row.className = "rouge";
+      }
+    });
+  }
+
+  // Méthode pour se désabonner si nécessaire
+  unsubscribe() {
+    this.eventManager.unsubscribe(this.update.bind(this));
   }
 }
