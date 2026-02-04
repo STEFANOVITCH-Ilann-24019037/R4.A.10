@@ -91,4 +91,25 @@ class EventManager {
   getState() {
     return this.state;
   }
+
+  // Charger les températures depuis un JSON de capteurs
+  loadFromJSON(jsonData) {
+    // Vider le tableau des températures
+    this.A_tempe = [];
+
+    if (jsonData.capteurs && Array.isArray(jsonData.capteurs)) {
+      jsonData.capteurs.forEach((capteur) => {
+        if (capteur.type === "Thermique") {
+          const temperature = parseFloat(capteur.Valeur);
+          this.A_tempe.push(temperature);
+          console.log("Températures chargées depuis JSON:", temperature);
+        }
+      });
+    }
+
+    // Réinitialiser l'index
+    this.state.currentIndex = -1;
+
+
+  }
 }

@@ -1,4 +1,5 @@
 class TemperatureDisplay {
+
   constructor(eventManager) {
     this.eventManager = eventManager;
     this.O_AfficheTemp = document.getElementById("tempList");

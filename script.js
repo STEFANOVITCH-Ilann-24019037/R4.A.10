@@ -4,6 +4,10 @@ var O_EM = new EventManager();
 // Créer le TemperatureDisplay qui s'abonne automatiquement à l'EventManager
 var O_TempDisplay = new TemperatureDisplay(O_EM);
 
+
+// Charger les données JSON pour le test
+O_EM.loadFromJSON("testCapteurs.json");
+
 // Fonction qui déclenche la mise à jour du state
 function updateTemperature() {
   O_EM.updateState();
